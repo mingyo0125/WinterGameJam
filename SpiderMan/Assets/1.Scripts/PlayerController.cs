@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour
     Rigidbody  rigidbody;
     Camera cam;
     RaycastHit hit;
-    public LayerMask layerMask;
 
     [SerializeField] float moveSpeed = 10;
     [SerializeField] float rotateSpeed = 3f;
@@ -88,12 +87,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
-    private void Jump()
-    {
-
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         canCling = true;

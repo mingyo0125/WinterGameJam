@@ -17,12 +17,16 @@ public class RopeAction : MonoBehaviour
     LineRenderer lineRenderer;
     RaycastHit hit;
     Vector3 spot;
+    Vector3 currentVec;
 
 
     bool OnGrapping = false;
-    [SerializeField]float lerpTime;
+    [SerializeField] float lerpTime;
     [SerializeField] float dampPower;
     [SerializeField] float springPower;
+
+    
+    
     
     private void Start()
     {
@@ -51,35 +55,12 @@ public class RopeAction : MonoBehaviour
             }
         }
         DrawRope();
-    }
 
-<<<<<<< HEAD
-    private void FixedUpdate()
-    {
-        currentVec = player.transform.position;
-    }
-
-    private void Grab()
-    {
-        //°íÃÄ¶ó
-        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, 100f))
-        {
-            if(hit.collider.tag == "GrabObject")
-            {
-                spot = hit.point;
-                GrabObject.action(new Vector3(currentVec.x, currentVec.y, currentVec.z));
-
-                lineRenderer.positionCount = 2;
-                lineRenderer.SetPosition(0, this.transform.position);
-                lineRenderer.SetPosition(1, hit.point);
-                float dis = Vector3.Distance(this.transform.position, spot);
-            }
-        }   
     }
 
 
-=======
->>>>>>> parent of 352276b (GrabFin)
+
+
     private void Grapping()
     {
         player.transform.position = Vector3.Lerp(player.transform.position, hit.transform.position, lerpTime * Time.deltaTime);
@@ -89,6 +70,12 @@ public class RopeAction : MonoBehaviour
     {
         if(Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, 100f, layerMask))
         {
+
+            if(hit.collider.tag == "GrabObj")
+            {
+                return;
+            }
+
             OnGrapping = true;
 
 
