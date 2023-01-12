@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - GrabObj
+  - Ground
   layers:
   - Default
   - TransparentFX

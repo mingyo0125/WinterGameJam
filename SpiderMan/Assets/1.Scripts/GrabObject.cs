@@ -24,7 +24,15 @@ public class GrabObject : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, pickRange, layermask))
                 {
-                    GrabObj(hit.transform.gameObject);
+                    if (hit.collider.tag == "Ground")
+                    {
+                        Debug.Log("321");
+                        return;
+                    }
+                    else
+                    {
+                        GrabObj(hit.transform.gameObject);
+                    }
                 }
             }
             else
@@ -43,7 +51,7 @@ public class GrabObject : MonoBehaviour
         if (pickObj.GetComponent<Rigidbody>())
         {
             OutlineObj.outLine();
-
+            
             holdObjrb = pickObj.GetComponent<Rigidbody>();
             holdObjrb.useGravity = false;
             holdObjrb.drag = 10;

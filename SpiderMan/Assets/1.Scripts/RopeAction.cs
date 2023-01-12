@@ -70,33 +70,33 @@ public class RopeAction : MonoBehaviour
     {
         if(Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, 100f, layerMask))
         {
-
             if(hit.collider.tag == "GrabObj")
             {
                 return;
             }
+            else
+            {
+                OnGrapping = true;
 
-            OnGrapping = true;
+                aimImage.gameObject.SetActive(false);
 
+                spot = hit.point;
+                lineRenderer.positionCount = 2;
+                lineRenderer.SetPosition(0, this.transform.position);
+                lineRenderer.SetPosition(1, hit.point);
 
-            aimImage.gameObject.SetActive(false);
+                springJoint = player.gameObject.AddComponent<SpringJoint>();
+                springJoint.autoConfigureConnectedAnchor = false;
+                springJoint.connectedAnchor = spot;
 
-            spot = hit.point;
-            lineRenderer.positionCount = 2;
-            lineRenderer.SetPosition(0,this.transform.position);
-            lineRenderer.SetPosition(1,hit.point);
+                float dis = Vector3.Distance(this.transform.position, spot);
 
-            springJoint = player.gameObject.AddComponent<SpringJoint>();
-            springJoint.autoConfigureConnectedAnchor = false;
-            springJoint.connectedAnchor = spot;
-
-            float dis = Vector3.Distance(this.transform.position, spot);
-
-            springJoint.maxDistance = dis;
-            springJoint.minDistance = dis * 0.5f;
-            springJoint.damper = dampPower;
-            springJoint.spring = springPower;
-            springJoint.massScale = 5f;
+                springJoint.maxDistance = dis;
+                springJoint.minDistance = dis * 0.5f;
+                springJoint.damper = dampPower;
+                springJoint.spring = springPower;
+                springJoint.massScale = 5f;
+            }
         }
     }
 

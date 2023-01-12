@@ -4,18 +4,21 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    Rigidbody  rigidbody;
+    Rigidbody rigidbody;
     Camera cam;
     RaycastHit hit;
 
-    [SerializeField] float moveSpeed = 10;
+    [SerializeField] float moveSpeed = 10f;
     [SerializeField] float rotateSpeed = 3f;
-    [SerializeField] float currentRotate = 0;
+    [SerializeField] float currentRotate = 0f;
+    [SerializeField] float JumpPower = 5f;
 
     [SerializeField] GameObject player;
-    
+
     bool canCling;
-    public bool canClimbing;
+    bool canClimbing;
+    bool isGround;
+
 
     float inputX;
     float inputZ;
@@ -33,17 +36,11 @@ public class PlayerController : MonoBehaviour
         Cling();
         PlayerMove();
         RotateCamera();
-
-        if (canClimbing)
-        {
-            if (Input.GetKey(KeyCode.Space))
-            {
-                transform.Translate(Vector3.up * moveSpeed * Time.deltaTime);
-            }
-        }
+        Climbing();
+        Jump();
     }
 
-    public void PlayerMove()
+    private void PlayerMove()
     {
         inputX = Input.GetAxisRaw("Horizontal");
         inputZ = Input.GetAxisRaw("Vertical");
@@ -74,22 +71,47 @@ public class PlayerController : MonoBehaviour
     {
         if (canCling)
         {
-            if(Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift))
             {
                 rigidbody.drag = 100;
                 inputZ = 0;
                 canClimbing = true;
             }
-            else if(Input.GetKeyUp(KeyCode.LeftShift))
-            { 
+            else if (Input.GetKeyUp(KeyCode.LeftShift))
+            {
                 rigidbody.drag = 0;
                 canClimbing = false;
             }
         }
     }
+
+    private void Climbing()
+    {
+        if (canClimbing)
+        {
+            if (Input.GetKey(KeyCode.Space))
+            {
+                transform.Translate(Vector3.up * moveSpeed * Time.deltaTime);
+            }
+        }
+    }
+
+    private void Jump()
+    {
+        if(isGround)
+        {
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                rigidbody.AddForce(Vector3.up * JumpPower,ForceMode.Impulse);
+            }
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         canCling = true;
+
+        isGround = true;
     }
 
     private void OnCollisionExit(Collision collision)
@@ -97,5 +119,7 @@ public class PlayerController : MonoBehaviour
         canCling = false;
         canClimbing = false;
         rigidbody.drag = 0;
+
+        isGround = false;
     }
 }
