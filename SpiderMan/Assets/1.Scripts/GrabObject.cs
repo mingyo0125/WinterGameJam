@@ -26,7 +26,6 @@ public class GrabObject : MonoBehaviour
                 {
                     if (hit.collider.tag == "Ground")
                     {
-                        Debug.Log("321");
                         return;
                     }
                     else
